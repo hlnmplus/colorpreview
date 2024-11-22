@@ -30,7 +30,7 @@ template = """
 
 @dp.message(Command("start"))
 async def cmd_start(message: types.Message):
-    await message.reply("<b>👋 Привет!</b>\n\nЭтот бот позволяет выводить цвет, его базовую информацию и представление в других системах в чат.\n\n<code>@colorpreviewbot #f9d509</code>\nТак же, вы можете использовать формат RGB в качестве входной\n<code>@colorpreviewbot 249 213 9</code>\n\nБот имеет <a href = 'https://github.com/hlnmplus/colorpreview'>открытый исходный код></a>.", disable_web_page_preview = True)
+    await message.reply("<b>👋 Привет!</b>\n\nЭтот бот позволяет выводить цвет, его базовую информацию и представление в других системах в чат.\n\n<code>@colorpreviewbot #f9d509</code>\n\nТак же, вы можете использовать формат RGB в качестве входной:\n<code>@colorpreviewbot 249 213 9</code>\n\nБот имеет <a href = 'https://github.com/hlnmplus/colorpreview'>открытый исходный код</a>.", disable_web_page_preview = True)
 
 async def areq(hex):
     async with aiohttp.ClientSession() as session:
