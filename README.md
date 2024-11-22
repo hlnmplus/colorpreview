@@ -10,6 +10,6 @@ Simple telegram bot to display color and it's basic information via inline. Writ
 - `cpreview/bin/activate` on Linux
 3. Clone repository locally using `git clone https://github.com/hlnmplus/colorpreview`
 4. Run `cd colorpreview` to move to bot directory
-5. Run `python3 -m pip install -r requirements.txt`
+5. Run `python3 -m pip install -r requirements.txt` to install bot dependencies
 6. Set your Telegram Bot API token in credentials.py file
 7. Run your bot using `python3 main.py`
