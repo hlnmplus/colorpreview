@@ -1,3 +1,3 @@
-# \/ \/ \/ PASTE YOUR BOT TOKEN HERE
+#       \/ PASTE YOUR BOT TOKEN HERE
 token = ""
-# /\ /\ /\ PASTE YOUR BOT TOKEN HERE
+#       /\ PASTE YOUR BOT TOKEN HERE
