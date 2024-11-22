@@ -12,12 +12,12 @@ from credentials import token
 
 logging.basicConfig(level=logging.INFO)
 
-bot = Bot(token=token, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
+bot = Bot(token=token, default=DefaultBotProperties(parse_mode = ParseMode.HTML))
 dp = Dispatcher()
 
 @dp.message(Command("start"))
 async def cmd_start(message: types.Message):
-    await message.reply("<b>👋 Привет!</b>\n\nЭтот бот позволяет выводить цвет, его базовую информацию и представление в других системах в чат.\n\n<code>@colorpreviewbot #f9d509</code>\nТак же, вы можете использовать формат RGB в качестве входной\n<code>@colorpreviewbot 249 213 9</code>\n\nhttps://holinim.xyz/donate", disable_web_page_preview = True)
+    await message.reply("<b>👋 Привет!</b>\n\nЭтот бот позволяет выводить цвет, его базовую информацию и представление в других системах в чат.\n\n<code>@colorpreviewbot #f9d509</code>\nТак же, вы можете использовать формат RGB в качестве входной\n<code>@colorpreviewbot 249 213 9</code>\n\nБот имеет <a href = 'https://github.com/hlnmplus/colorpreview'>открытый исходный код></a>.", disable_web_page_preview = True)
 
 async def areq(hex):
     async with aiohttp.ClientSession() as session:
@@ -78,15 +78,15 @@ async def inline(query: types.InlineQuery):
         
         title = f"🎨 Информация о цвете {query_text}"
 
-        response = f'<a href="https://singlecolorimage.com/get/{color}/400x100"><b>🎨 Информация о цвете {query_text}</b></a>\n\nИмя: {name}\nЦвет соответствует имени: {named}\n\nRGB: <code>{rgb}</code>\nHSV: <code>{hsv}</code>\nHSL: <code>{hsl}</code>\nCMYK: <code>{cmyk}</code>'
+        response = f'<a href = "https://singlecolorimage.com/get/{color}/400x100"><b>🎨 Информация о цвете {query_text}</b></a>\n\nИмя: {name}\nЦвет соответствует имени: {named}\n\nRGB: <code>{rgb}</code>\nHSV: <code>{hsv}</code>\nHSL: <code>{hsl}</code>\nCMYK: <code>{cmyk}</code>'
 
         result = types.InlineQueryResultArticle(
-            id=query.id,
-            title=title,
-            input_message_content=types.InputTextMessageContent(message_text=response)
+            id = query.id,
+            title = title,
+            input_message_content = types.InputTextMessageContent(message_text = response)
         )
 
-        await bot.answer_inline_query(query.id, results=[result])
+        await bot.answer_inline_query(query.id, results = [result])
     elif (len(query_text.split(' ')) == 3) and all(isnum(c) for c in query_text.split(' ')) and all(int(c) <= 255 for c in query_text.split(' ')) and all(int(c) >= 0 for c in query_text.split(' ')):
         rgb = query_text.split(' ')
         color = '%02x%02x%02x' % (int(rgb[0]), int(rgb[1]), int(rgb[2]))
@@ -107,12 +107,12 @@ async def inline(query: types.InlineQuery):
         
             title = f"🎨 Информация о цвете {query_text}"
 
-            response = f'<a href="https://singlecolorimage.com/get/{color}/400x100"><b>🎨 Информация о цвете {query_text}</b></a>\n\nИмя: {name}\nЦвет соответствует имени: {named}\n\nRGB: <code>{rgb}</code>\nHSV: <code>{hsv}</code>\nHSL: <code>{hsl}</code>\nCMYK: <code>{cmyk}</code>'
+            response = f'<a href = "https://singlecolorimage.com/get/{color}/400x100"><b>🎨 Информация о цвете {query_text}</b></a>\n\nИмя: {name}\nЦвет соответствует имени: {named}\n\nRGB: <code>{rgb}</code>\nHSV: <code>{hsv}</code>\nHSL: <code>{hsl}</code>\nCMYK: <code>{cmyk}</code>'
 
             result = types.InlineQueryResultArticle(
-            id=query.id,
-                title=title,
-                input_message_content=types.InputTextMessageContent(message_text=response)
+                id = query.id,
+                title = title,
+                input_message_content = types.InputTextMessageContent(message_text=response)
             )
             await bot.answer_inline_query(query.id, results=[result])
         else:
@@ -120,9 +120,9 @@ async def inline(query: types.InlineQuery):
             title = "😓 Неподдерживаемый или некорректный цвет"
 
             result = types.InlineQueryResultArticle(
-                id=query.id,
-                title=title,
-                input_message_content=types.InputTextMessageContent(message_text=response)
+                id = query.id,
+                title = title,
+                input_message_content = types.InputTextMessageContent(message_text=response)
             )
             await bot.answer_inline_query(query.id, results=[result])
     else:
@@ -130,9 +130,9 @@ async def inline(query: types.InlineQuery):
         title = "😓 Неподдерживаемый или некорректный цвет"
 
         result = types.InlineQueryResultArticle(
-            id=query.id,
-            title=title,
-            input_message_content=types.InputTextMessageContent(message_text=response)
+            id = query.id,
+            title = title,
+            input_message_content = types.InputTextMessageContent(message_text=response)
         )
 
         await bot.answer_inline_query(query.id, results=[result])
