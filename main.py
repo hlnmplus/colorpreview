@@ -1,13 +1,11 @@
 import asyncio
 import logging
-import aiohttp
-from aiogram import Bot, Dispatcher, types, filters
+import colorsutils as c
+from colorsys import rgb_to_hls, rgb_to_hsv
+from aiogram import Bot, Dispatcher, types
 from aiogram.filters.command import Command
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-from aiogram.utils.keyboard import InlineKeyboardBuilder
-from json import loads as jsd
 from credentials import token
 
 logging.basicConfig(level=logging.INFO)
@@ -22,34 +20,25 @@ template = """
 <b>Цвет соответствует имени</b>: {}
 
 <b>HEX</b>: <code>{}</code>
-<b>RGB</b>: <code>{}</code>
-<b>HSV</b>: <code>{}</code>
-<b>HSL</b>: <code>{}</code>
-<b>CMYK</b>: <code>{}</code>
+<b>RGB</b>: <code>rgb{}</code>
+<b>HSV</b>: <code>hsv{}</code>
+<b>HSL</b>: <code>hsl{}</code>
+<b>CMYK</b>: <code>cmyk{}</code>
 """
 
 @dp.message(Command("start"))
 async def cmd_start(message: types.Message):
-    await message.reply("<b>👋 Привет!</b>\n\nЭтот бот позволяет выводить цвет, его базовую информацию и представление в других системах в чат.\n\n<code>@colorpreviewbot #f9d509</code>\n\nТак же, вы можете использовать формат RGB в качестве входной:\n<code>@colorpreviewbot 249 213 9</code>\n\nБот имеет <a href = 'https://github.com/hlnmplus/colorpreview'>открытый исходный код</a>.", disable_web_page_preview = True)
+    await message.reply("""<b>👋 Привет!</b>
+   
+Этот бот позволяет выводить цвет, его базовую информацию и представление в других системах в чат.
 
-async def areq(hex):
-    async with aiohttp.ClientSession() as session:
-        async with session.get(f'https://www.thecolorapi.com/id?hex={hex}') as resp:
-            return await resp.text()
-
-async def getcolorinfo(hex):
-    js = await areq(hex)
-    js = jsd(js)
-
-    name = js['name']['value']
-    named = js['name']['exact_match_name']
-    closestnamed = js['name']['closest_named_hex']
-    rgb = js['rgb']['value']
-    hsv = js['hsv']['value']
-    hsl = js['hsl']['value']
-    cmyk = js['cmyk']['value']
-
-    return [name, named, closestnamed, rgb, hsv, hsl, cmyk]
+<code>@colorpreviewbot ff7538</code>
+Так же, Вы можете использовать формат RGB в качестве входной:
+<code>@colorpreviewbot 255 117 56</code>
+Или просто по названию цвета:
+<code>@colorpreviewbot Orange</code>
+     
+Бот имеет <a href = 'https://github.com/hlnmplus/colorpreview'>открытый исходный код</a>.""", disable_web_page_preview = True)
 
 def ishex(color):
     if len(color) != 6 or not all(c in "0123456789ABCDEFabcdef" for c in color):
@@ -68,19 +57,36 @@ def isnum(num):
         return False
 
 async def makeresponse(color, query_text):
-    pkg = await getcolorinfo(color)
-    name = pkg[0]
-    named = pkg[1]
-    closestnamed = pkg[2]
-    rgb = pkg[3]
-    hsv = pkg[4]
-    hsl = pkg[5]
-    cmyk = pkg[6]
+    name = c.nearestcolor(color)
 
-    if named == True:
+    if name[1] == 0:
         named = "да"
-    elif named == False:
-        named = f"нет, ближайший именованный - {closestnamed}"
+    else:
+        named = f"нет, ближайший именованный - {c.hexbycolorname(name[0])}"
+    
+    name = name[0]
+
+    rgb = c.hex2rgb(color)
+    hsv = rgb_to_hsv(rgb[0], rgb[1], rgb[2])
+    hls = rgb_to_hls(rgb[0], rgb[1], rgb[2])
+    cmyk = c.rgb2cmyk(rgb[0], rgb[1], rgb[2])
+
+    newhsv = []
+    newhls = []
+    newcmyk = []
+
+    for i in range(len(hsv)):
+        newhsv.append(round(hsv[i], 2))
+
+    for i in range(len(hls)):
+        newhls.append(round(hls[i], 2))
+    
+    for i in range(len(cmyk)):
+        newcmyk.append(round(cmyk[i], 2))
+
+    hsv = f"({newhsv[0]}, {newhsv[1]}, {newhsv[2]})"
+    hsl = f"({newhls[0]}, {newhls[2]}%, {newhls[1]}%)"
+    cmyk = f"({newcmyk[0]}%, {newcmyk[1]}%, {newcmyk[2]}%, {newcmyk[3]}%)"
 
     return template.format(color, query_text, name, named, color, rgb, hsv, hsl, cmyk)
 
@@ -104,6 +110,10 @@ async def inline(query: types.InlineQuery):
         else:
             response = f"<b>😓 Неподдерживаемый или некорректный цвет</b>"
             title = "😓 Неподдерживаемый или некорректный цвет"
+    elif query_text in c.db.keys():
+        color = c.hexbycolorname(query_text)
+        title = f"🎨 Информация о цвете {query_text}"
+        response = await makeresponse(color, query_text)
     else:
         response = f"<b>😓 Неподдерживаемый или некорректный цвет</b>"
         title = "😓 Неподдерживаемый или некорректный цвет"
