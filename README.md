@@ -1,5 +1,6 @@
 # colorpreview
-Simple telegram bot to display color and it's basic information via inline. Written in aiogram 3.x
+Simple telegram bot to display color and it's basic information via inline. Written in aiogram 3.x.
+
 [{ прочитать на русском }](https://github.com/hlnmplus/colorpreview/blob/main/README_RU.md)
 
 ## Installation
