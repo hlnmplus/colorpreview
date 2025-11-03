@@ -9,7 +9,7 @@ Simple telegram bot to display color and it's basic information via inline. Writ
 2. Activate your virtual enviroment via:
 - `cd cpreview/Scripts && activate.bat` on Windows command prompt
 - `cpreview/Scripts/activate.ps1` on Windows PowerShell
-- `source cpreview/bin/activate` on Linux
+- `source ./cpreview/bin/activate` on Linux
 3. Clone repository locally using `git clone https://github.com/hlnmplus/colorpreview`
 4. Run `cd colorpreview` to move to bot directory
 5. Run `python3 -m pip install -r requirements.txt` to install bot dependencies

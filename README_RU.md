@@ -7,7 +7,7 @@
 2. Активируйте ваше виртуальное окружение через:
 - `cd cpreview/Scripts && activate.bat` в командной строке Windows
 - `cpreview/Scripts/activate.ps1` в Windows PowerShell
-- `cpreview/bin/activate` в Linux
+- `source ./cpreview/bin/activate` в Linux
 3. Скопируйте репозиторий локально через `git clone https://github.com/hlnmplus/colorpreview`
 4. Выполните `cd colorpreview` чтобы перейти в директорию бота
 5. Выполнте `python3 -m pip install -r requirements.txt` чтобы установить зависимости бота
