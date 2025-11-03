@@ -10,6 +10,6 @@
 - `source ./cpreview/bin/activate` в Linux
 3. Скопируйте репозиторий локально через `git clone https://github.com/hlnmplus/colorpreview`
 4. Выполните `cd colorpreview` чтобы перейти в директорию бота
-5. Выполнте `python3 -m pip install -r requirements.txt` чтобы установить зависимости бота
+5. Выполните `python3 -m pip install -r requirements.txt` чтобы установить зависимости бота
 6. Укажите ваш токен Telegram API в файле credentials.py
 7. Запустите бота с помощью `python3 main.py`
